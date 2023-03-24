@@ -40,7 +40,8 @@ public class RowGameGUI {
 
         messages.add(playerturn);
         playerturn.setText("Player 1 to play 'X'");
-
+        playerturn.setEditable(false);
+        
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.resetGame();

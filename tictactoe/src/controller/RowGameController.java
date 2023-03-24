@@ -37,6 +37,11 @@ public class RowGameController {
      * @param block The block to be moved to by the current player
      */
     public void move(JButton block) {
+	// Check if block has already been marked
+	if (!block.getText().equals("")) {
+		gameView.playerturn.setText("Block has already been marked. Please select a different block.");
+		return;
+	}
 	gameModel.movesLeft--;
 	if(gameModel.movesLeft%2 == 1) {
 	    gameView.playerturn.setText("'X': Player 1");

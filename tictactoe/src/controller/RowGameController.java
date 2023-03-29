@@ -444,7 +444,7 @@ public class RowGameController {
             for(int column = 0;column<3;column++) {
                 gameModel.blocksData[row][column].reset();
 		gameModel.blocksData[row][column].setIsLegalMove(true);
-		gameView.gameBoardView.updateBlock(gameModel,row,column);
+		gameView.update(gameModel);
             }
         }
         gameModel.setPlayer(Player.PLAYER_1);

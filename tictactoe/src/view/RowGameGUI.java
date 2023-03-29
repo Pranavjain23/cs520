@@ -1,3 +1,9 @@
+/**
+The RowGameGUI class is a composite view that contains
+the RowGameGridView and RowGameStatusView as its components.
+It also initializes the game GUI and provides the functionality
+to update the view after each player move and reset the game.
+*/
 package view;
 
 import javax.swing.JButton;
@@ -10,57 +16,63 @@ import java.awt.event.*;
 import model.RowGameModel;
 import controller.RowGameController;
 
-public class RowGameGUI {
+public class RowGameGUI implements RowGameView{
+    // The game GUI frame
     public JFrame gui = new JFrame("Tic Tac Toe");
+    // The game model
     public RowGameModel gameModel = new RowGameModel();
-    public JButton[][] blocks = new JButton[3][3];
+
+    // The reset button
     public JButton reset = new JButton("Reset");
+
+    // The player turn text area
     public JTextArea playerturn = new JTextArea();
 
+    // The game controller
+    private RowGameController gameController;
+
+    // The game board view component
+    public RowGameGridView gameBoardView;
+
+    // The game status view component
+    public RowGameStatusView gameStatusView;
+
     /**
+     * Creates a new RowGameGUI object with a given RowGameController.
+     * Initializes the game GUI with the game board view, game status view,
+     * and reset button components.
      * Creates a new game initializing the GUI.
+     * 
+     * @param gameController The RowGameController that controls the game.
      */
-    public RowGameGUI(RowGameController controller) {
+    public RowGameGUI(RowGameController gameController) {
+        this.gameController = gameController;
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gui.setSize(new Dimension(500, 350));
         gui.setResizable(true);
+        
 
-        JPanel gamePanel = new JPanel(new FlowLayout());
-        JPanel game = new JPanel(new GridLayout(3,3));
-        gamePanel.add(game, BorderLayout.CENTER);
+        gameBoardView = new RowGameGridView(this.gameController);
+        JPanel gamePanel = gameBoardView.gamePanel;
 
         JPanel options = new JPanel(new FlowLayout());
         options.add(reset);
-        JPanel messages = new JPanel(new FlowLayout());
-        messages.setBackground(Color.white);
+
+        gameStatusView = new RowGameStatusView(this.gameController);
+        JPanel messages = gameStatusView.messages;
 
         gui.add(gamePanel, BorderLayout.NORTH);
         gui.add(options, BorderLayout.CENTER);
         gui.add(messages, BorderLayout.SOUTH);
 
-        messages.add(playerturn);
-        playerturn.setText("Player 1 to play 'X'");
-        playerturn.setEditable(false);
-        
+        gameStatusView.messages.add(playerturn);
+
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.resetGame();
+                gameController.resetGame();
             }
         });
 
-        // Initialize a JButton for each cell of the 3x3 game board.
-        for(int row = 0; row<3; row++) {
-            for(int column = 0; column<3 ;column++) {
-                blocks[row][column] = new JButton();
-                blocks[row][column].setPreferredSize(new Dimension(75,75));
-                game.add(blocks[row][column]);
-                blocks[row][column].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			controller.move((JButton)e.getSource());
-                    }
-                });
-            }
-        }
     }
 
     /**
@@ -71,8 +83,9 @@ public class RowGameGUI {
      * @param row The row that contains the block
      * @param column The column that contains the block
      */
-    public void updateBlock(RowGameModel gameModel, int row, int column) {
-	blocks[row][column].setText(gameModel.blocksData[row][column].getContents());
-	blocks[row][column].setEnabled(gameModel.blocksData[row][column].getIsLegalMove());
-    }
+    public void update(RowGameModel gameModel) {
+        gameBoardView.update(gameModel);
+    
+        gameStatusView.update(gameModel);
+        }
 }

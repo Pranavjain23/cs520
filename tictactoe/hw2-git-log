@@ -1,3 +1,9 @@
+commit 49c2c4ccfd6b169ff77bfd4f3179fa54a3b6fd3c
+Author: Pranavjain23 <ipranavjain@gmail.com>
+Date:   Tue Mar 28 20:29:49 2023 -0400
+
+    adding git log to show incremental commits for Understandability, Modularity, Extensibility
+
 commit d285f392cf40e2500e21f81399c5c1603433c0b3
 Author: Pranavjain23 <ipranavjain@gmail.com>
 Date:   Tue Mar 28 20:06:12 2023 -0400
